@@ -1,13 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./components/Header";
 import Button from "./components/Button";
 import Tasks from "./components/Tasks";
 import { useState } from "react"
 import Task from "./components/Task";
 import AddTask from "./components/AddTask";
+import Filter from "./components/filter";//DETTA
 function App() {
 //  const [showAddTask, setShowAddTask] = useState(false)
   const [showAddTask, setShowAddTask] = useState(false)
+  const [inputFilter, setInputFilter] = useState("")//DETTA
+  const [newList, setNewList] = useState([])
   const [tasks, setTasks] = useState([
     {
         id: 1,
@@ -31,6 +34,20 @@ function App() {
     },
     ])
 
+useEffect (() => { //DETTA
+  console.log(inputFilter);
+  filterInputHandler();
+
+}, [inputFilter]);
+
+//Gjordes idag
+//DETTA
+const filterInputHandler = () => {
+  const filteredList = tasks.filter((v) => inputFilter === "" || v.text.toLowerCase().includes(inputFilter.toLowerCase()));
+  console.log(filteredList);
+  setNewList(filteredList)
+}
+//
 //...Add Task
 const addTask = (task) => {
 const id = Math.floor(Math.random() *
@@ -58,6 +75,8 @@ task.id === id ? {...task, reminder:
 }
 //
 
+const filteredTasks = tasks.filter((v) => inputFilter === "" || v.text.toLowerCase().includes(inputFilter.toLowerCase()));
+
   return (
     <div className='container'>
       <Header onAdd={() => setShowAddTask
@@ -66,13 +85,18 @@ task.id === id ? {...task, reminder:
         />
       {showAddTask && <AddTask onAdd={addTask}/>}
       {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete=
-        {deleteTask} onToggle={toggleReminder} />
+        <Tasks tasks={filteredTasks} onDelete=
+        {deleteTask} onToggle={toggleReminder} 
+        inputFilter={inputFilter}//DETTA
+        newList={newList}/>//DETTA
+        
       
       ) : (
         'No tasks to show' 
       )}
-
+<Filter inputFilter = {inputFilter}
+setInputFilter = {setInputFilter}
+tasks = {tasks}/>
     </div>
   );
 }
