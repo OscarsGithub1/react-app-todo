@@ -6,6 +6,7 @@ import { useState } from "react"
 import Task from "./components/Task";
 import AddTask from "./components/AddTask";
 import Filter from "./components/filter";//DETTA
+import Delete from "./components/Delete";
 function App() {
 //  const [showAddTask, setShowAddTask] = useState(false)
   const [showAddTask, setShowAddTask] = useState(false)
@@ -66,6 +67,7 @@ const deleteTask = (id) => {
 }
 //End of delete task
 
+
 // Toogle reminder
 const toggleReminder = (id) => {
 setTasks(
@@ -97,7 +99,10 @@ const filteredTasks = tasks.filter((v) => inputFilter === "" || v.text.toLowerCa
 <Filter inputFilter = {inputFilter}
 setInputFilter = {setInputFilter}
 tasks = {tasks}/>
+  <Delete deleteCallBack={ () => {setTasks([])}} />
     </div>
+
+   
   );
 }
 
